@@ -33,7 +33,7 @@
             font-size: 14px;
         }
 
-        /* 필터 탭 (아동/성년/전체) */
+        /* 필터 탭 (아동/청소년/성년/전체) */
         .filter-container {
             display: flex;
             justify-content: center;
@@ -116,8 +116,9 @@
             margin-bottom: 5px;
         }
         .tag.adult { background: #1c3d6e; color: #b0c4de; }
+        .tag.teen { background: #374151; color: #d1d5db; } /* 청소년기 태그 색상 (다크그레이) */
         .tag.child { background: #2a6f97; color: #e6f2ff; }
-        .tag.nsfw { background: #6e1c24; color: #ffb3b3; } /* 수위용 태그 */
+        .tag.nsfw { background: #6e1c24; color: #ffb3b3; }
 
         /* 라이트박스 (이미지 클릭 시 크게 보기) */
         #lightbox {
@@ -160,26 +161,22 @@
 <body>
 
     <header>
-        <h1>🔱 오르빈 폰 오케아노스 갤러리</h1>
-        <p class="subtitle">에델마르 왕국 소공작의 일상 기록</p>
+        <h1>🔱 오르빈 일러스트 갤러리</h1>
+        <p class="subtitle">에델마르 왕국 소공작의 성장 기록</p>
     </header>
 
     <!-- 필터 버튼 -->
     <div class="filter-container">
         <button class="filter-btn active" onclick="filterGallery('all')">전체보기</button>
         <button class="filter-btn" onclick="filterGallery('child')">🌱 아동기</button>
+        <button class="filter-btn" onclick="filterGallery('teen')">🌪️ 청소년기</button>
         <button class="filter-btn" onclick="filterGallery('adult')">👑 성년기</button>
     </div>
 
     <!-- 갤러리 영역 -->
     <div class="gallery-grid" id="gallery">
-        <!-- 
-            데이터 구조: 
-            data-category: 필터링을 위한 카테고리 (child/adult)
-            img src: 실제 파일명 (대소문자/확장자 정확히 일치해야 함)
-        -->
-        
-        <!-- [ 아동기 ] -->
+
+        <!-- =================== [ 아동기 ] =================== -->
         <div class="gallery-item child" onclick="openLightbox(this)">
             <div class="img-wrapper"><img src="오르빈_(아동)공부.jpeg" alt="공부"></div>
             <div class="caption"><span class="tag child">아동</span>공부</div>
@@ -229,7 +226,101 @@
             <div class="caption"><span class="tag child">아동</span>호기심</div>
         </div>
 
-        <!-- [ 성년기 ] -->
+        <!-- =================== [ 청소년기 ] =================== -->
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)검술.jpeg" alt="검술"></div>
+            <div class="caption"><span class="tag teen">청소년</span>검술</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)고양이교감.jpeg" alt="고양이교감"></div>
+            <div class="caption"><span class="tag teen">청소년</span>고양이와 교감</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)고양이놀다.jpeg" alt="고양이놀다"></div>
+            <div class="caption"><span class="tag teen">청소년</span>고양이와 놀다</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)기쁨.jpeg" alt="기쁨"></div>
+            <div class="caption"><span class="tag teen">청소년</span>기쁨</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)놀람.jpeg" alt="놀람"></div>
+            <div class="caption"><span class="tag teen">청소년</span>놀람</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)눈물.jpeg" alt="눈물"></div>
+            <div class="caption"><span class="tag teen">청소년</span>눈물</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)담담.jpeg" alt="담담"></div>
+            <div class="caption"><span class="tag teen">청소년</span>담담함</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)마법사용.jpeg" alt="마법사용"></div>
+            <div class="caption"><span class="tag teen">청소년</span>마법사용</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)무도회.jpeg" alt="무도회"></div>
+            <div class="caption"><span class="tag teen">청소년</span>무도회</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)부끄러움.jpeg" alt="부끄러움"></div>
+            <div class="caption"><span class="tag teen">청소년</span>부끄러움</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)부상.jpeg" alt="부상"></div>
+            <div class="caption"><span class="tag teen">청소년</span>부상</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)산책.jpeg" alt="산책"></div>
+            <div class="caption"><span class="tag teen">청소년</span>산책</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)수면.jpeg" alt="수면"></div>
+            <div class="caption"><span class="tag teen">청소년</span>수면</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)여유.jpeg" alt="여유"></div>
+            <div class="caption"><span class="tag teen">청소년</span>여유</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)오만.jpeg" alt="오만"></div>
+            <div class="caption"><span class="tag teen">청소년</span>오만</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)오만함.jpeg" alt="오만함"></div>
+            <div class="caption"><span class="tag teen">청소년</span>오만함</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)울음.jpeg" alt="울음"></div>
+            <div class="caption"><span class="tag teen">청소년</span>울음</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)유저바라봄.jpeg" alt="유저바라봄"></div>
+            <div class="caption"><span class="tag teen">청소년</span>유저를 바라봄</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)장난침.jpeg" alt="장난침"></div>
+            <div class="caption"><span class="tag teen">청소년</span>장난침</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)츤데레.jpeg" alt="츤데레"></div>
+            <div class="caption"><span class="tag teen">청소년</span>츤데레</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)케이크먹음.jpeg" alt="케이크먹음"></div>
+            <div class="caption"><span class="tag teen">청소년</span>케이크 먹음</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)화남.jpeg" alt="화남"></div>
+            <div class="caption"><span class="tag teen">청소년</span>화남</div>
+        </div>
+        <div class="gallery-item teen" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(청소년)휴식.jpeg" alt="휴식"></div>
+            <div class="caption"><span class="tag teen">청소년</span>휴식</div>
+        </div>
+
+        <!-- =================== [ 성년기 ] =================== -->
         <div class="gallery-item adult" onclick="openLightbox(this)">
             <div class="img-wrapper"><img src="오르빈_(성년)고독.jpeg" alt="고독"></div>
             <div class="caption"><span class="tag adult">성년</span>고독</div>
@@ -306,14 +397,11 @@
 
     <!-- 자바스크립트 기능 -->
     <script>
-        // 1. 카테고리 필터 기능
         function filterGallery(category) {
-            // 버튼 활성화 스타일 변경
             const buttons = document.querySelectorAll('.filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
 
-            // 이미지 숨김/표시 처리
             const items = document.querySelectorAll('.gallery-item');
             items.forEach(item => {
                 if (category === 'all' || item.classList.contains(category)) {
@@ -324,7 +412,6 @@
             });
         }
 
-        // 2. 라이트박스(크게 보기) 열기
         function openLightbox(element) {
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
@@ -338,7 +425,6 @@
             lightbox.style.display = 'flex';
         }
 
-        // 3. 라이트박스 닫기 (배경이나 X버튼 클릭 시)
         function closeLightbox(event) {
             if (event.target.id === 'lightbox' || event.target.classList.contains('close-btn')) {
                 document.getElementById('lightbox').style.display = 'none';
