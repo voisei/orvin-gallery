@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오르빈 폰 오케아노스 일러스트 갤러리</title>
+    <style>
+        /* 기본 테마 및 리셋 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+            background-color: #07111f; /* 심해 배경색 */
+            color: #e6f2ff;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* 헤더 영역 */
+        header {
+            text-align: center;
+            padding: 40px 0 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(77, 184, 255, 0.2);
+        }
+        h1 {
+            font-size: 28px;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(77, 184, 255, 0.5);
+        }
+        p.subtitle {
+            color: #8da4c0;
+            font-size: 14px;
+        }
+
+        /* 필터 탭 (아동/성년/전체) */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #4db8ff;
+            color: #4db8ff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: #4db8ff;
+            color: #07111f;
+            box-shadow: 0 0 10px rgba(77, 184, 255, 0.6);
+        }
+
+        /* 갤러리 그리드 레이아웃 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 개별 이미지 카드 */
+        .gallery-item {
+            background: #0d2340;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(176, 196, 222, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(77, 184, 255, 0.3);
+        }
+        
+        /* 이미지 썸네일 비율 고정 */
+        .img-wrapper {
+            width: 100%;
+            padding-top: 100%; /* 1:1 정방형 비율 */
+            position: relative;
+        }
+        .gallery-item img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* 캡션 (설명) */
+        .caption {
+            padding: 12px;
+            text-align: center;
+            font-size: 14px;
+            color: #cddced;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .tag {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .tag.adult { background: #1c3d6e; color: #b0c4de; }
+        .tag.child { background: #2a6f97; color: #e6f2ff; }
+        .tag.nsfw { background: #6e1c24; color: #ffb3b3; } /* 수위용 태그 */
+
+        /* 라이트박스 (이미지 클릭 시 크게 보기) */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        #lightbox img {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            border: 2px solid #4db8ff;
+        }
+        #lightbox-caption {
+            margin-top: 15px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-btn:hover { color: #4db8ff; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🔱 오르빈 폰 오케아노스 갤러리</h1>
+        <p class="subtitle">에델마르 왕국 소공작의 일상 기록</p>
+    </header>
+
+    <!-- 필터 버튼 -->
+    <div class="filter-container">
+        <button class="filter-btn active" onclick="filterGallery('all')">전체보기</button>
+        <button class="filter-btn" onclick="filterGallery('child')">🌱 아동기</button>
+        <button class="filter-btn" onclick="filterGallery('adult')">👑 성년기</button>
+    </div>
+
+    <!-- 갤러리 영역 -->
+    <div class="gallery-grid" id="gallery">
+        <!-- 
+            데이터 구조: 
+            data-category: 필터링을 위한 카테고리 (child/adult)
+            img src: 실제 파일명 (대소문자/확장자 정확히 일치해야 함)
+        -->
+        
+        <!-- [ 아동기 ] -->
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)공부.jpeg" alt="공부"></div>
+            <div class="caption"><span class="tag child">아동</span>공부</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)놀람.png" alt="놀람"></div>
+            <div class="caption"><span class="tag child">아동</span>놀람</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)눈물.jpeg" alt="눈물"></div>
+            <div class="caption"><span class="tag child">아동</span>눈물</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)마법사용.jpeg" alt="마법사용"></div>
+            <div class="caption"><span class="tag child">아동</span>마법사용</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)마법폭주.jpeg" alt="마법폭주"></div>
+            <div class="caption"><span class="tag child">아동</span>마법폭주</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)부끄러움.jpeg" alt="부끄러움"></div>
+            <div class="caption"><span class="tag child">아동</span>부끄러움</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)선물건네줌.jpeg" alt="선물건네줌"></div>
+            <div class="caption"><span class="tag child">아동</span>선물건네줌</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)수면.jpeg" alt="수면"></div>
+            <div class="caption"><span class="tag child">아동</span>수면</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)신남.jpeg" alt="신남"></div>
+            <div class="caption"><span class="tag child">아동</span>신남</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)케이크먹기.png" alt="케이크먹기"></div>
+            <div class="caption"><span class="tag child">아동</span>케이크먹기</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)통곡.jpeg" alt="통곡"></div>
+            <div class="caption"><span class="tag child">아동</span>통곡</div>
+        </div>
+        <div class="gallery-item child" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(아동)호기심.jpeg" alt="호기심"></div>
+            <div class="caption"><span class="tag child">아동</span>호기심</div>
+        </div>
+
+        <!-- [ 성년기 ] -->
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)고독.jpeg" alt="고독"></div>
+            <div class="caption"><span class="tag adult">성년</span>고독</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)마법.jpg" alt="마법"></div>
+            <div class="caption"><span class="tag adult">성년</span>마법</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)마법사용.jpeg" alt="마법사용"></div>
+            <div class="caption"><span class="tag adult">성년</span>마법사용</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)목욕.jpeg" alt="목욕"></div>
+            <div class="caption"><span class="tag adult">성년</span>목욕</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)무도회.jpeg" alt="무도회"></div>
+            <div class="caption"><span class="tag adult">성년</span>무도회</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)산책.jpeg" alt="산책"></div>
+            <div class="caption"><span class="tag adult">성년</span>산책</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)성행위.jpeg" alt="성행위"></div>
+            <div class="caption"><span class="tag adult">성년</span><span class="tag nsfw">R-19</span>성행위</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)수음.jpeg" alt="수음"></div>
+            <div class="caption"><span class="tag adult">성년</span><span class="tag nsfw">R-19</span>수음</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)승마.jpeg" alt="승마"></div>
+            <div class="caption"><span class="tag adult">성년</span>승마</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)여유.jpeg" alt="여유"></div>
+            <div class="caption"><span class="tag adult">성년</span>여유</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)웃음.jpeg" alt="웃음"></div>
+            <div class="caption"><span class="tag adult">성년</span>웃음</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)유저를안음.jpeg" alt="유저를안음"></div>
+            <div class="caption"><span class="tag adult">성년</span>유저를 안음</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)유저와스킨쉽.jpeg" alt="유저와스킨쉽"></div>
+            <div class="caption"><span class="tag adult">성년</span>유저와 스킨쉽</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)잠에서깸.jpeg" alt="잠에서깸"></div>
+            <div class="caption"><span class="tag adult">성년</span>잠에서 깸</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)집무중.jpeg" alt="집무중"></div>
+            <div class="caption"><span class="tag adult">성년</span>집무중</div>
+        </div>
+        <div class="gallery-item adult" onclick="openLightbox(this)">
+            <div class="img-wrapper"><img src="오르빈_(성년)흑화.jpeg" alt="흑화"></div>
+            <div class="caption"><span class="tag adult">성년</span>흑화</div>
+        </div>
+
+    </div>
+
+    <!-- 라이트박스 (크게 보기 모달) -->
+    <div id="lightbox" onclick="closeLightbox(event)">
+        <span class="close-btn">&times;</span>
+        <img id="lightbox-img" src="" alt="확대된 이미지">
+        <div id="lightbox-caption"></div>
+    </div>
+
+    <!-- 자바스크립트 기능 -->
+    <script>
+        // 1. 카테고리 필터 기능
+        function filterGallery(category) {
+            // 버튼 활성화 스타일 변경
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // 이미지 숨김/표시 처리
+            const items = document.querySelectorAll('.gallery-item');
+            items.forEach(item => {
+                if (category === 'all' || item.classList.contains(category)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // 2. 라이트박스(크게 보기) 열기
+        function openLightbox(element) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            
+            const img = element.querySelector('img');
+            const captionText = element.querySelector('.caption').innerText;
+
+            lightboxImg.src = img.src;
+            lightboxCaption.innerText = captionText;
+            lightbox.style.display = 'flex';
+        }
+
+        // 3. 라이트박스 닫기 (배경이나 X버튼 클릭 시)
+        function closeLightbox(event) {
+            if (event.target.id === 'lightbox' || event.target.classList.contains('close-btn')) {
+                document.getElementById('lightbox').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
